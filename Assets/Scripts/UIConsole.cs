@@ -8,10 +8,12 @@ public class UIConsole : MonoBehaviour
     public Text ctext;
     public ScrollRect sr;
     private int z = 0;
+    public float f = 50;
     
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     // Update is called once per frame
@@ -21,10 +23,9 @@ public class UIConsole : MonoBehaviour
         {
             z = z + 1;
             ctext.text = ctext.text + "\n - Linha " + z.ToString();
-            sr.velocity = new Vector2(0f, 25f);
+            sr.velocity = new Vector2(0f, 60f);
         }
  
-        
     }
 
 
