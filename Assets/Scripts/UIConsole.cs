@@ -9,25 +9,28 @@ public class UIConsole : MonoBehaviour
     public GameObject textline;
     public ScrollRect sr;
     private int z = 0;
+    public Escalonador escalonador;
     
     // Start is called before the first frame update
     void Start()
     {
+        escalonador = new Escalonador();
+        escalonador.Admitir();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Fire2")) CPrint();
+        if (Input.GetButtonDown("Fire2")) CPrint(Filas.fila_pronto_p0.Count.ToString());
 
     }
 
-    void CPrint()
+    void CPrint(string msg)
     {
         z = z + 1;
 
         GameObject txt = Instantiate(textline, container.transform);
-        txt.GetComponent<Text>().text = " - Linha " + z.ToString();
+        txt.GetComponent<Text>().text = msg;
 
 
         //autoscroll down

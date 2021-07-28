@@ -52,7 +52,7 @@ public class Escalonador
         List<Processo> dados = this.LerEntrada();
         foreach(var item in dados){
             if(item.GetMem() < this.PMemDisp){
-                if (item.GetPrioridade() == 0) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 0, coloca no rq0 de feedback
+                if (item.GetPrioridade() == 1) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 0, coloca no rq0 de feedback
                 else Filas.fila_pronto_p0.Add(item); // Se prioridade for 1, coloca na fila de FCFS
                 this.PMemDisp -= item.GetMem();
                 Debug.Log(PMemDisp);
