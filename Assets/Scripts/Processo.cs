@@ -29,11 +29,11 @@ public class Processo
         return this.id;
     }
 
-    public int Tchegada() {
+    public int GetTchegada() {
         return this.tchegada;
     }
 
-    public int Prioridade() {
+    public int GetPrioridade() {
         return this.prioridade;
     }
 

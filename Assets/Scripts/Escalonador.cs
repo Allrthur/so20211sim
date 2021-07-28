@@ -2,29 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Escalonador : MonoBehaviour
+public class Escalonador
 {
 
-    // Processos que a cpu está executando
+    // Processos que a cpu estï¿½ executando
     private Processo CPU1;
     private Processo CPU2;
     private Processo CPU3;
     private Processo CPU4;
 
-    // Processo que o disco está atendendo
+    // Processo que o disco estï¿½ atendendo
     private Processo DISC1;
     private Processo DISC2;
     private Processo DISC3;
     private Processo DISC4;
 
-    // Memória Principal
-    private int PMemTotal = 16384;
+    // Memï¿½ria Principal
+    public int PMemTotal = 16384;
     private int PMemDisp = 16384;
-
+    
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -35,30 +35,44 @@ public class Escalonador : MonoBehaviour
 
     //---------------------------------------------------//
 
-    void LerEntrada() // leitor do arquivo de entrada
-    { 
-    
+    List<Processo> LerEntrada() // leitor do arquivo de entrada
+    {
+        List<Processo> falae = new List<Processo>();
+        Processo processo = new Processo(10,0,10,101,3);
+        Processo processo2 = new Processo(10,0,10,1011,3);
+        falae.Add(processo);
+        falae.Add(processo2);
+        return falae;
     }
 
-    void Admitir() // Escalonador de Longo Prazo // Rick
+    public void Admitir() // Escalonador de Longo Prazo // Rick
     { 
         // parte leitora de arquivo? via LerEntrada()
         // nomear processo com SetId();
+        List<Processo> dados = this.LerEntrada();
+        foreach(var item in dados){
+            if(item.GetMem() < this.PMemDisp){
+                if (item.GetPrioridade() == 0) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 0, coloca no rq0 de feedback
+                else Filas.fila_pronto_p0.Add(item); // Se prioridade for 1, coloca na fila de FCFS
+                this.PMemDisp -= item.GetMem();
+                Debug.Log(PMemDisp);
+            }
+        }
     }
 
-    void LiberarMP() // Escalonador de Médio Prazo // Rick
+    void LiberarMP() // Escalonador de Mï¿½dio Prazo // Rick
     { 
-        // suspender processos quando a memória encher.
+        // suspender processos quando a memï¿½ria encher.
     }
 
     void Despachar() // Escalonador de Curto Prazo // Juan e Theo
     {
-        // Escolhe qual das filas de prioridade vão executar e em quais CPUs e qual processo pega qual disco.
+        // Escolhe qual das filas de prioridade vï¿½o executar e em quais CPUs e qual processo pega qual disco.
     }
 
-    void Executar(Processo p, int CPU) // Despachante cahama esse método para mandar uma CPU executar um processo // Juan e Theo // Arthur
+    void Executar(Processo p, int CPU) // Despachante cahama esse mï¿½todo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
-        //Randint de espera, simulando a execução do código
+        //Randint de espera, simulando a execuï¿½ï¿½o do cï¿½digo
         if (p.GetDisc() != 0)
         {
 
