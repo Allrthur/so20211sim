@@ -9,7 +9,7 @@ public class ECurtoPrazo
 
     // Despachante eh chamado toda vez que uma CPU estiver livre, vide metodo Executar no Escalonador
 
-    void Despachar(int CPU)
+    public void Despachar(int CPU)
     {
 
     }
@@ -17,7 +17,7 @@ public class ECurtoPrazo
     /*
     private int c;
     
-    void Despachar() // Escalonador de Curto Prazo // Juan e Theo
+    public void Despachar() // Escalonador de Curto Prazo // Juan e Theo
     {
         // Escolhe qual das filas de prioridade vao executar e em quais CPUs e qual processo pega qual disco.
         if(fila_pronto_p0 != NULL)

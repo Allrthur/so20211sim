@@ -68,14 +68,14 @@ public class Escalonador : MonoBehaviour
         elp.Admitir(LerEntrada());
     }
 
-    void LiberarMP(int mem) // Escalonador de Medio Prazo // Rick
+    public void LiberarMP(int mem) // Escalonador de Medio Prazo // Rick
     { 
         emp.LiberarMP(mem);// suspender processos quando a memoria encher.
     }
 
-    void Despachar() // Escalonador de Curto Prazo // Juan e Theo
+    void Despachar(int CPU) // Escalonador de Curto Prazo // Juan e Theo
     {
-        ecp.Despachar();
+        ecp.Despachar(CPU);
     }
 
     // Metodo Executar, chama Despachar do escalonador de curto prazo
