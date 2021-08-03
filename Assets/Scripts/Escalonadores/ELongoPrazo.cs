@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class ELongoPrazo
 {
+    private Escalonador pai;
+    
     // Memoria Principal
     private const int PMemTotal = 16384;
     private int PMemDisp = 16384;
+    
+    public ELongoPrazo (Escalonador pai){this.pai = pai;}    
     
     public void Admitir(List<Processo> dados)
     {
