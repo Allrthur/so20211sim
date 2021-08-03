@@ -9,13 +9,15 @@ public class UIConsole : MonoBehaviour
     public GameObject textline;
     public ScrollRect sr;
     private int z = 0;
-    public Escalonador escalonador;
+
+    public Escalonador e;
     
     // Start is called before the first frame update
     void Start()
     {
-        escalonador = new Escalonador();
-        escalonador.Admitir();
+        e = GetComponent<Escalonador>();
+        e.Admitir();
+        CPrint(" - Admissão feita com sucesso");
     }
 
     // Update is called once per frame

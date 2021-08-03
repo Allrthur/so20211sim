@@ -2,29 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Escalonador
+public class Escalonador : MonoBehaviour
 {
 
-    // Processos que a cpu est� executando
-    private Processo CPU1;
-    private Processo CPU2;
-    private Processo CPU3;
-    private Processo CPU4;
+    // Variaveis de referencia a outros scripts
+    private ELongoPrazo elp = new ELongoPrazo();
+    
+    // Processos que a cpu esta executando
+    private Processo CPU1 = null;
+    private Processo CPU2 = null;
+    private Processo CPU3 = null;
+    private Processo CPU4 = null;
 
-    // Processo que o disco est� atendendo
-    private Processo DISC1;
-    private Processo DISC2;
-    private Processo DISC3;
-    private Processo DISC4;
+    // Processo que o disco esta atendendo
+    private Processo DISC1 = null;
+    private Processo DISC2 = null;
+    private Processo DISC3 = null;
+    private Processo DISC4 = null;
 
-    // Mem�ria Principal
-    public int PMemTotal = 16384;
-    private int PMemDisp = 16384;
+
     
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -47,17 +48,7 @@ public class Escalonador
 
     public void Admitir() // Escalonador de Longo Prazo // Rick
     { 
-        // parte leitora de arquivo? via LerEntrada()
-        // nomear processo com SetId();
-        List<Processo> dados = this.LerEntrada();
-        foreach(var item in dados){
-            if(item.GetMem() < this.PMemDisp){
-                if (item.GetPrioridade() == 1) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 0, coloca no rq0 de feedback
-                else Filas.fila_pronto_p0.Add(item); // Se prioridade for 1, coloca na fila de FCFS
-                this.PMemDisp -= item.GetMem();
-                Debug.Log(PMemDisp);
-            }
-        }
+        elp.Admitir(LerEntrada());
     }
 
     void LiberarMP() // Escalonador de M�dio Prazo // Rick
