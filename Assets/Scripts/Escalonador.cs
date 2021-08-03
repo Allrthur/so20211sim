@@ -67,7 +67,25 @@ public class Escalonador
 
     void Despachar() // Escalonador de Curto Prazo // Juan e Theo
     {
+        int c;
         // Escolhe qual das filas de prioridade v�o executar e em quais CPUs e qual processo pega qual disco.
+        if(fila_pronto_p0 != NULL){
+            if (reservado_disc() >= fila_pronto_p0[0].disco){
+                reserva_disc(fila_pronto_p0[0].disco);
+                c = reservado_cpu();
+                reserva_cpu(c);
+                executar(fila_pronto_p0[0],c);             
+            }
+        }
+
+        else{
+            if (reservado_disc()>= fila_pronto_p1_rq0.disco){
+                reserva_disc(fila_pronto_p1_rq0[0].disco);
+                c = reservado_cpu();
+                reserva_cpu(c);
+                executar(fila_pronto_p1_rq0[0],c);
+            }
+        }
     }
 
     void Executar(Processo p, int CPU) // Despachante cahama esse m�todo para mandar uma CPU executar um processo // Juan e Theo // Arthur
@@ -89,4 +107,24 @@ public class Escalonador
     { 
         //Randint de espera, simulando o tempo de resposta do disco
     }
+
+
+
+
+
+    void reserva_disc(int qnt_disc){    // Muda o status do disco 
+
+    }
+
+    int reservado_disc(){ // Retorna qnt discos livres
+
+    }
+    
+    int reservado_cpu(){ // Retorna CPU livre
+
+    }
+    void reserva_cpu(int c){  // Muda status 1(UMA) CPU [c] 
+
+    }
+
 }
