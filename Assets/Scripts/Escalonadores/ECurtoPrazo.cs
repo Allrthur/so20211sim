@@ -7,6 +7,13 @@ public class ECurtoPrazo
     private Escalonador pai; // aponta para o antigo escalonador    
     public ECurtoPrazo(Escalonador pai){this.pai = pai;} //construtor de classe
 
+    // Despachante eh chamado toda vez que uma CPU estiver livre, vide metodo Executar no Escalonador
+
+    void Despachar(int CPU)
+    {
+
+    }
+    
     /*
     private int c;
     

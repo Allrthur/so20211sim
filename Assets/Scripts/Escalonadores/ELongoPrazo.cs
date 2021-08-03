@@ -21,6 +21,7 @@ public class ELongoPrazo
                 this.PMemDisp -= item.GetMem();
                 //Debug.Log(PMemDisp);
             }
+            else pai.LiberarMP(item.GetMem() - PMemDisp);
         }
 
     }
