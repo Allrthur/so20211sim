@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Escalonador
 {
 
@@ -20,6 +21,9 @@ public class Escalonador
     // Mem�ria Principal
     public int PMemTotal = 16384;
     private int PMemDisp = 16384;
+
+    // Quantum
+    private int quantum;
     
     // Start is called before the first frame update
     void Start()
@@ -91,12 +95,24 @@ public class Escalonador
     void Executar(Processo p, int CPU) // Despachante cahama esse m�todo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
         //Randint de espera, simulando a execu��o do c�digo
-        if (p.GetDisc() != 0)
+        if (p.GetDisc() == 0)
         {
-
+            if ((p.GetDuracao() - quantum) <= 0)
+            {
+                p = null;
+                Despachar();
+            }
+            else
+            {
+                p.SetDuração(p.GetDuracao() - quantum);
+                Filas.fila_pronto_p0.Add(p);
+                Despachar();
+            }
         }
         else // ele teve que chamar um disco, bota ele no bloqueado
         {
+            Filas.bloqueados_disc_1.Add(p);
+            Despachar();
             //EntradaSaida();
             //Vai pra fila de bloqueados;
         }
