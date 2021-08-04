@@ -35,7 +35,6 @@ public class Escalonador : MonoBehaviour
         ecp = new ECurtoPrazo(this);
         emp = new EMedioPrazo(this);
         elp = new ELongoPrazo(this);
-        Admitir();
     }
 
     void FixedUpdate() // Este eh o loop do simulador, executado a cada unidade de tempo.
