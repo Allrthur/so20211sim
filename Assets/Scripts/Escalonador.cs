@@ -35,6 +35,7 @@ public class Escalonador : MonoBehaviour
         ecp = new ECurtoPrazo(this);
         emp = new EMedioPrazo(this);
         elp = new ELongoPrazo(this);
+        Admitir();
     }
 
     void FixedUpdate() // Este eh o loop do simulador, executado a cada unidade de tempo.
@@ -54,8 +55,10 @@ public class Escalonador : MonoBehaviour
     List<Processo> LerEntrada() // leitor do arquivo de entrada
     {
         List<Processo> falae = new List<Processo>();
+        Processo processo3 = new Processo(10,1,10,16311,3);
         Processo processo = new Processo(10,0,10,101,3);
-        Processo processo2 = new Processo(10,0,10,1011,3);
+        Processo processo2 = new Processo(10,1,10,1011,3);
+        falae.Add(processo3);
         falae.Add(processo);
         falae.Add(processo2);
         return falae;
@@ -68,9 +71,9 @@ public class Escalonador : MonoBehaviour
         elp.Admitir(LerEntrada());
     }
 
-    public void LiberarMP(int mem) // Escalonador de Medio Prazo // Rick
+    public (int,int) LiberarMP(int mem, int prioridade) // Escalonador de Medio Prazo // Rick
     { 
-        emp.LiberarMP(mem);// suspender processos quando a memoria encher.
+        return emp.LiberarMP(mem, prioridade);// suspender processos quando a memoria encher.
     }
 
     void Despachar(int CPU) // Escalonador de Curto Prazo // Juan e Theo
