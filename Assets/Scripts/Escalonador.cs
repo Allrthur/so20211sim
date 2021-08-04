@@ -50,16 +50,71 @@ public class Escalonador : MonoBehaviour
     }
 
     //---------------------------------------------------//
+    List<Processo> LerEntrada() {
+        List<Processo> falae = new List<Processo>();
 
-    List<Processo> LerEntrada() // leitor do arquivo de entrada
+        Processo processo1 = new Processo(10,1,10,13211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+
+        falae.Add(processo1);
+        falae.Add(processo2);
+        falae.Add(processo3);
+
+        return falae;
+    }
+    List<Processo> LerEntradaTestes() // leitor do arquivo de entrada
     {
         List<Processo> falae = new List<Processo>();
-        Processo processo3 = new Processo(10,1,10,16311,3);
-        Processo processo = new Processo(10,0,10,101,3);
-        Processo processo2 = new Processo(10,1,10,1011,3);
-        falae.Add(processo3);
-        falae.Add(processo);
+        // Alguns casos possiveis de entrada, basta descomentar um dos casos que estao entre /* */ e comentar o que estava ativo
+        // Passo a passo será mostrado no console
+
+        //Caso 1: Todos entram de primeira
+        /*
+        Processo processo1 = new Processo(10,1,10,13211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+        */
+
+        //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
+        /*
+        Processo processo1 = new Processo(10,1,10,16211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+        */
+
+        //Caso 3: Primeiro processo gigante entra, segundo processo com prioridade força sua saida liberando espaço suficiente para o terceiro processo entrar de primeira
+        /*
+        Processo processo1 = new Processo(10,1,10,16311,3);
+        Processo processo2 = new Processo(10,0,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+        */
+
+        //Caso 4: Um processo de alta prioridade de grande tamanho barra outros processos não importando qual prioridade deles
+        /*
+        Processo processo1 = new Processo(10,0,10,16311,3);
+        Processo processo2 = new Processo(10,0,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+        */
+
+        //Caso 5: A memoria está cheia, há um processo de baixa prioridade em uma das filas anteriores ao rq0, porém seu espaço ocupado 
+        //        na memoria nao é o suficiente para dar lugar ao novo processo, o forçando a continuar procurando mesmo que seja de alta prioridade
+        /*
+        Filas.fila_pronto_p1_rq2.Add(new Processo(10,1,10,10,3)); // o tamanho desse processo nao foi retirado do valor da memoria disponivel apenas por simplicidade de testes
+        Processo processo1 = new Processo(10,1,10,16211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,0,10,1011,3);
+        */
+        //Caso 6: Um processo novo ao tentar suspender outro vai sempre começar procurando na lista rq2, depois na rq1 e depois na rq0
+
+        Filas.fila_pronto_p1_rq1.Add(new Processo(10,1,10,1400,3)); // o tamanho desse processo nao foi retirado do valor da memoria disponivel apenas por simplicidade de testes
+        Processo processo1 = new Processo(10,1,10,16211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
+
+        falae.Add(processo1);
         falae.Add(processo2);
+        falae.Add(processo3);
         return falae;
     }
 
@@ -67,7 +122,8 @@ public class Escalonador : MonoBehaviour
 
     public void Admitir() // Escalonador de Longo Prazo // Rick
     { 
-        elp.Admitir(LerEntrada());
+        //elp.Admitir(LerEntrada());
+        elp.Admitir(LerEntradaTestes());
     }
 
     public (int,int) LiberarMP(int mem, int prioridade) // Escalonador de Medio Prazo // Rick

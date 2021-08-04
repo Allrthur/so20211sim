@@ -19,16 +19,19 @@ public class ELongoPrazo
             Debug.Log("---NOVO PROCESSO---");
             if(item.GetMem() < this.PMemDisp){
                 if (item.GetPrioridade() == 1) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 1, coloca no rq0 de feedback
-                else Filas.fila_pronto_p0.Add(item); // Se prioridade for 0, coloca na fila de FCFS
+                else{
+                    Filas.fila_pronto_p0.Add(item); // Se prioridade for 0, coloca na fila de FCFS
+                    Debug.Log("Entrou na fila de prioridade");
+                }
                 this.PMemDisp -= item.GetMem();
                 Debug.Log("Admitiu de primeira");
+                Debug.Log("Foi admitido depois de suspender um processo - FALSE");
                 continue;
                 //Debug.Log(PMemDisp);
             }
             else{
-                var retorno = pai.LiberarMP(item.GetMem(), item.GetPrioridade());
-                int valor = retorno.Item1;
-                Debug.Log(valor);
+                var retorno = pai.LiberarMP(item.GetMem(), item.GetPrioridade());   // tenta suspender algum processo e retorna o valor liberado na MP já contando 
+                int valor = retorno.Item1;                                          // com a entrada do novo processo e retornando também de qual fila foi suspendido
                 if(valor == int.MinValue) {
                     Debug.Log("Tentou liberar mas não deu");
                     continue;
@@ -40,26 +43,24 @@ public class ELongoPrazo
                     Debug.Log("Entrou na fila de prioridade");
                 }
                 else{
+                    Filas.fila_pronto_p1_rq0.Add(item);
                     switch (retorno.Item2)
                     {
                         case 0:
-                            Filas.fila_pronto_p1_rq0.Add(item);
-                            Debug.Log("Entrou na fila rq0");
+                            Debug.Log("Entrou  na rq0 após suspender um processo na fila rq0");
                             break;
                         case 1:
-                            Filas.fila_pronto_p1_rq1.Add(item);
-                            Debug.Log("Entrou na fila rq1");
+                            Debug.Log("Entrou  na rq0 após suspender um processo na fila rq1");
                             break;
                         case 2:
-                            Filas.fila_pronto_p1_rq2.Add(item);
-                            Debug.Log("Entrou na fila rq2");
+                            Debug.Log("Entrou  na rq0 após suspender um processo na fila rq2");
                             break;
                         default:
                             Debug.Log("Essa linha não deveria ser printada, houve algum erro");
                             return;
                     }
                 }
-                Debug.Log("Sendo que foi admitido depois de suspender um processo");
+                Debug.Log("Foi admitido depois de suspender um processo - TRUE");
                 continue;
 
             }
