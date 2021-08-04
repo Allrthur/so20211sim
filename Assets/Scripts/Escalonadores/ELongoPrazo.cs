@@ -17,6 +17,7 @@ public class ELongoPrazo
     
         foreach(var item in dados){
             Debug.Log("---NOVO PROCESSO---");
+            item.SetId(Time.frameCount.ToString());
             if(item.GetMem() < this.PMemDisp){
                 if (item.GetPrioridade() == 1) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 1, coloca no rq0 de feedback
                 else{

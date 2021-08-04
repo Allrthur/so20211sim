@@ -49,7 +49,7 @@ public class Processo
         return this.disc;
     }
 
-    public void SetDuração(int dur)
+    public void SetDuracao(int dur)
     {
         this.duracao = dur;
     }

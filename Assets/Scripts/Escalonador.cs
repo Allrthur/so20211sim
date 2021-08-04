@@ -39,13 +39,13 @@ public class Escalonador : MonoBehaviour
 
     void FixedUpdate() // Este eh o loop do simulador, executado a cada unidade de tempo.
     {
-        
-        Admitir(); // Admite os processos da vez, se houver, liberando MP caso necessario via o ECurtoPrazo
+        Debug.Log("t = "+ t.ToString() +" ------------------------------------------------");
+        Admitir(); // Admite os processos da vez, se houver, liberando MP caso necessario via o EMedioPrazo
         // Executa os processos nas CPUs
-        Executar(CPU1, 1);
-        Executar(CPU2, 2); 
-        Executar(CPU3, 3); 
-        Executar(CPU4, 4);  
+        if(CPU1 != null)Executar(CPU1, 1); else ecp.Despachar(1);
+        if(CPU1 != null)Executar(CPU2, 2); else ecp.Despachar(2);
+        if(CPU1 != null)Executar(CPU3, 3); else ecp.Despachar(3);
+        if(CPU1 != null)Executar(CPU4, 4); else ecp.Despachar(4);
         t += 1;
     }
 
@@ -70,11 +70,11 @@ public class Escalonador : MonoBehaviour
         // Passo a passo será mostrado no console
 
         //Caso 1: Todos entram de primeira
-        /*
+        
         Processo processo1 = new Processo(10,1,10,13211,3);
         Processo processo2 = new Processo(10,1,10,101,3);
         Processo processo3 = new Processo(10,1,10,1011,3);
-        */
+        
 
         //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
         /*
@@ -106,12 +106,12 @@ public class Escalonador : MonoBehaviour
         Processo processo3 = new Processo(10,0,10,1011,3);
         */
         //Caso 6: Um processo novo ao tentar suspender outro vai sempre começar procurando na lista rq2, depois na rq1 e depois na rq0
-
+        /*
         Filas.fila_pronto_p1_rq1.Add(new Processo(10,1,10,1400,3)); // o tamanho desse processo nao foi retirado do valor da memoria disponivel apenas por simplicidade de testes
         Processo processo1 = new Processo(10,1,10,16211,3);
         Processo processo2 = new Processo(10,1,10,101,3);
         Processo processo3 = new Processo(10,1,10,1011,3);
-
+        */
         falae.Add(processo1);
         falae.Add(processo2);
         falae.Add(processo3);
@@ -122,8 +122,11 @@ public class Escalonador : MonoBehaviour
 
     public void Admitir() // Escalonador de Longo Prazo // Rick
     { 
-        //elp.Admitir(LerEntrada());
-        elp.Admitir(LerEntradaTestes());
+        
+        List<Processo> davez = new List<Processo>(); // Criar lista de entrada com os processo que chegam no tempo t.
+        foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
+        elp.Admitir(davez); // passar davez para o admitir desta linha
+        davez = new List<Processo>();
     }
 
     public (int,int) LiberarMP(int mem, int prioridade) // Escalonador de Medio Prazo // Rick
@@ -137,7 +140,6 @@ public class Escalonador : MonoBehaviour
     }
 
     // Metodo Executar, chama Despachar do escalonador de curto prazo
-
     void Executar(Processo p, int CPU) // Despachante chama esse metodo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
@@ -149,7 +151,7 @@ public class Escalonador : MonoBehaviour
             }
             else
             {
-                p.SetDuração(p.GetDuracao() - quantum);
+                p.SetDuracao(p.GetDuracao() - quantum);
                 Filas.fila_pronto_p0.Add(p);
                 Despachar(CPU);
             }
