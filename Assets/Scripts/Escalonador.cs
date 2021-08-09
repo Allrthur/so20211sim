@@ -13,17 +13,17 @@ public class Escalonador : MonoBehaviour
     public ELongoPrazo elp;
     
     // Processos que a cpu esta executando
-    private Processo CPU1;
-    private Processo CPU2;
-    private Processo CPU3;
-    private Processo CPU4;
+    public Processo CPU1;
+    public Processo CPU2;
+    public Processo CPU3;
+    public Processo CPU4;
 
     // Processo que o disco esta atendendo
     // Isso faz o mesmo que a fila de bloqueados. Posso tornar isso aq o tempo q o processador leva para liberar?
-    private Processo DISC1;
-    private Processo DISC2;
-    private Processo DISC3;
-    private Processo DISC4;
+    public Processo DISC1;
+    public Processo DISC2;
+    public Processo DISC3;
+    public Processo DISC4;
 
     // Tempo em unidades de tempo
     private int t = 0;
@@ -41,6 +41,7 @@ public class Escalonador : MonoBehaviour
     {
         Debug.Log("t = "+ t.ToString() +" ------------------------------------------------");
         Admitir(); // Admite os processos da vez, se houver, liberando MP caso necessario via o EMedioPrazo
+        
         // Executa os processos nas CPUs
         if(CPU1 != null)Executar(CPU1, 1); else ecp.Despachar(1);
         if(CPU1 != null)Executar(CPU2, 2); else ecp.Despachar(2);
@@ -49,7 +50,7 @@ public class Escalonador : MonoBehaviour
         t += 1;
     }
 
-    //---------------------------------------------------//
+    // Metodos de execução
     List<Processo> LerEntrada() {
         List<Processo> falae = new List<Processo>();
 
@@ -71,7 +72,7 @@ public class Escalonador : MonoBehaviour
 
         //Caso 1: Todos entram de primeira
         
-        Processo processo1 = new Processo(10,1,10,13211,3);
+        Processo processo1 = new Processo(10,1,10,13211,0);
         Processo processo2 = new Processo(10,1,10,101,3);
         Processo processo3 = new Processo(10,1,10,1011,3);
         
@@ -117,7 +118,7 @@ public class Escalonador : MonoBehaviour
         falae.Add(processo3);
         return falae;
     }
-
+    
     // Metodos com proxy
 
     public void Admitir() // Escalonador de Longo Prazo // Rick
@@ -142,24 +143,54 @@ public class Escalonador : MonoBehaviour
     // Metodo Executar, chama Despachar do escalonador de curto prazo
     void Executar(Processo p, int CPU) // Despachante chama esse metodo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
+        if(p == null)return;
+        Debug.Log("Executando o processo " + p.ToString() + " na cpu " + CPU.ToString());
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
         {
-            if ((p.GetDuracao() - quantum) <= 0)
+            p.SetDuracao(p.GetDuracao() - 1);
+            if (p.GetDuracao() <= 0) // se a execucao do processo acabou, tira da cpu, esse if vai funcionar como fatia de tempo tambem
             {
-                p = null;
-                Despachar(CPU);
+                
+                switch(CPU)
+                {
+                    case 1:
+                        CPU1 = null;
+                    break;
+                    case 2:
+                        CPU2 = null;
+                    break;
+                    case 3:
+                        CPU3 = null;
+                    break;
+                    case 4: 
+                        CPU4 = null;
+                    break;
+                }
+                
             }
-            else
-            {
-                p.SetDuracao(p.GetDuracao() - quantum);
-                Filas.fila_pronto_p0.Add(p);
-                Despachar(CPU);
-            }
+            
+            
         }
         else // ele teve que chamar um disco, bota ele no bloqueado
         {
             Filas.bloqueados_disc_1.Add(p);
+            switch(CPU)
+            {
+                case 1:
+                    CPU1 = null;
+                break;
+                case 2:
+                    CPU2 = null;
+                break;
+                case 3:
+                    CPU3 = null;
+                break;
+                case 4: 
+                    CPU4 = null;
+                break;
+            }
             Despachar(CPU);
+            
             //EntradaSaida();
             //Vai pra fila de bloqueados;
         }

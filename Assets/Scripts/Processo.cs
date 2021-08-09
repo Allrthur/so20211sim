@@ -21,6 +21,9 @@ public class Processo
         this.disc = disc;
     }
 
+    public override string ToString(){
+        return "<" +tchegada.ToString() +", "+ prioridade.ToString() +", "+ duracao.ToString() +", "+ mem.ToString() +", "+ disc.ToString() + ">";
+    }
     public void SetId(string newid) {
         this.id = newid;
     }
