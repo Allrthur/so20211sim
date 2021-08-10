@@ -41,12 +41,12 @@ public class Escalonador : MonoBehaviour
     {
         Debug.Log("t = "+ t.ToString() +" ------------------------------------------------");
         Admitir(); // Admite os processos da vez, se houver, liberando MP caso necessario via o EMedioPrazo
-        
+
         // Executa os processos nas CPUs
-        if(CPU1 != null)Executar(CPU1, 1); else ecp.Despachar(1);
-        if(CPU1 != null)Executar(CPU2, 2); else ecp.Despachar(2);
-        if(CPU1 != null)Executar(CPU3, 3); else ecp.Despachar(3);
-        if(CPU1 != null)Executar(CPU4, 4); else ecp.Despachar(4);
+        if(CPU1 != null)Executar(CPU1, 1); else {ecp.Despachar(1); Executar(CPU1, 1);}
+        if(CPU2 != null)Executar(CPU2, 2); else {ecp.Despachar(2); Executar(CPU2, 2);}
+        if(CPU3 != null)Executar(CPU3, 3); else {ecp.Despachar(3); Executar(CPU3, 3);}
+        if(CPU4 != null)Executar(CPU4, 4); else {ecp.Despachar(4); Executar(CPU4, 4);}
         t += 1;
     }
 
@@ -74,7 +74,7 @@ public class Escalonador : MonoBehaviour
         
         Processo processo1 = new Processo(10,1,10,13211,0);
         Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
+        Processo processo3 = new Processo(10,1,10,1011,1);
         
 
         //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
@@ -144,7 +144,7 @@ public class Escalonador : MonoBehaviour
     void Executar(Processo p, int CPU) // Despachante chama esse metodo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
         if(p == null)return;
-        Debug.Log("Executando o processo " + p.ToString() + " na cpu " + CPU.ToString());
+        Debug.Log("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString());
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
         {
             p.SetDuracao(p.GetDuracao() - 1);
