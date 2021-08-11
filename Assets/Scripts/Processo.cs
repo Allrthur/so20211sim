@@ -22,7 +22,7 @@ public class Processo
     }
 
     public override string ToString(){
-        return "Processo#" +id+ " <" +tchegada.ToString() +", "+ prioridade.ToString() +", "+ duracao.ToString() +", "+ mem.ToString() +", "+ disc.ToString() + ">";
+        return "Processo#" +id; //+ " <" +tchegada.ToString() +", "+ prioridade.ToString() +", "+ duracao.ToString() +", "+ mem.ToString() +", "+ disc.ToString() + ">";
     }
     public void SetId(string newid) {
         this.id = newid;

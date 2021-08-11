@@ -10,7 +10,7 @@ public class EMedioPrazo
     public (int,int) LiberarMP(int memItem, int prioridade) // Liberar MP pede a memoria necessaria para admitir o novo processo
     {
         //Basicamente checa as listas de prontos do rq2 ao rq0 para suspender o processo que ocupa maior espaço lá
-        Debug.Log("Função para liberar memoria devido a falta de espaço foi chamada");
+        //Debug.Log("Função para liberar memoria devido a falta de espaço foi chamada");
         //Debug.Log(Filas.fila_pronto_p1_rq0.Count);
         int maior;
         if(Filas.fila_pronto_p1_rq2.Count > 0){
@@ -19,8 +19,8 @@ public class EMedioPrazo
             if(Filas.fila_pronto_p1_rq2[maior].GetMem() >= memItem){                // checa se maior processo dessa lista é o suficiente para liberar espaço para o novo
                 Suspensos.fila_pronto_p1_rq2.Add(Filas.fila_pronto_p1_rq2[maior]);  // se for coloca ele no suspenso
                 int retorno = Filas.fila_pronto_p1_rq2[maior].GetMem() - memItem;   // salva a diferença do tamanho dos processos (note que somar isso ao valor da memoria disponivel significa liberar espaço)
+                pai.uc.CPrint(Filas.fila_pronto_p1_rq2[maior]+" Foi suspenso");     // Debug.Log("Suspendeu o processo de maior tamanho do rq2");
                 Filas.fila_pronto_p1_rq2.RemoveAt(maior);                           // tira o processo antigo da fila
-                Debug.Log("Suspendeu o processo de maior tamanho do rq2");
                 return (retorno,2);                                                 // retorna o tamanho do processo novo menos o tamanho do que acabou de ser suspendido 
             }                                                                       // junto de qual fila liberou espaço
             else{ Debug.Log("Tamanho do maior processo no rq2 nao seria suficiente para entrada de novo processo");}
@@ -31,8 +31,8 @@ public class EMedioPrazo
             if(Filas.fila_pronto_p1_rq1[maior].GetMem() >= memItem){ 
                 Suspensos.fila_pronto_p1_rq1.Add(Filas.fila_pronto_p1_rq1[maior]);
                 int retorno = Filas.fila_pronto_p1_rq1[maior].GetMem() - memItem;
+                pai.uc.CPrint(Filas.fila_pronto_p1_rq1[maior]+" Foi suspenso");  // Debug.Log("Suspendeu o processo de maior tamanho do rq1");
                 Filas.fila_pronto_p1_rq1.RemoveAt(maior);
-                Debug.Log("Suspendeu o processo de maior tamanho do rq1");
                 return (retorno, 1);
             }
             else{ Debug.Log("Tamanho do maior processo no rq1 nao seria suficiente para entrada de novo processo");}
@@ -43,8 +43,8 @@ public class EMedioPrazo
             if(Filas.fila_pronto_p1_rq0[maior].GetMem() >= memItem){ 
                 Suspensos.fila_pronto_p1_rq0.Add(Filas.fila_pronto_p1_rq0[maior]);
                 int retorno = Filas.fila_pronto_p1_rq0[maior].GetMem() - memItem ;
+                pai.uc.CPrint(Filas.fila_pronto_p1_rq0[maior]+" Foi suspenso"); // Debug.Log("Suspendeu o processo de maior tamanho do rq0");
                 Filas.fila_pronto_p1_rq0.RemoveAt(maior);
-                Debug.Log("Suspendeu o processo de maior tamanho do rq0");
                 if(Filas.fila_pronto_p1_rq0.Count <= 1 && prioridade == 0) {Debug.Log("O processo tem prioridade e suspendeu outro a força");}
                 return ( retorno , 0);
             }

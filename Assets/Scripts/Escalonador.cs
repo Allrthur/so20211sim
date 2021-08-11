@@ -8,6 +8,7 @@ public class Escalonador : MonoBehaviour
     
     
     // Variaveis que apontam para outras classes
+    public UIConsole uc;
     public ECurtoPrazo ecp;
     public EMedioPrazo emp;
     public ELongoPrazo elp;
@@ -32,22 +33,27 @@ public class Escalonador : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        uc = GetComponent<UIConsole>();
         ecp = new ECurtoPrazo(this);
         emp = new EMedioPrazo(this);
         elp = new ELongoPrazo(this);
+
     }
 
     void FixedUpdate() // Este eh o loop do simulador, executado a cada unidade de tempo.
     {
-        Debug.Log("t = "+ t.ToString() +" ------------------------------------------------");
+        //Debug.Log("t = "+ t.ToString() +" ------------------------------------------------");
         Admitir(); // Admite os processos da vez, se houver, liberando MP caso necessario via o EMedioPrazo
-
+        
         // Executa os processos nas CPUs
         if(CPU1 != null)Executar(CPU1, 1); else {ecp.Despachar(1); Executar(CPU1, 1);}
         if(CPU2 != null)Executar(CPU2, 2); else {ecp.Despachar(2); Executar(CPU2, 2);}
         if(CPU3 != null)Executar(CPU3, 3); else {ecp.Despachar(3); Executar(CPU3, 3);}
         if(CPU4 != null)Executar(CPU4, 4); else {ecp.Despachar(4); Executar(CPU4, 4);}
+        
+        // incrementa o contador de tempo
         t += 1;
+        uc.t = t;
     }
 
     // Metodos de execução
@@ -126,7 +132,7 @@ public class Escalonador : MonoBehaviour
         
         List<Processo> davez = new List<Processo>(); // Criar lista de entrada com os processo que chegam no tempo t.
         foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
-        elp.Admitir(davez); // passar davez para o admitir desta linha
+        if(davez.Count != 0)elp.Admitir(davez); // passar davez para o admitir desta linha
         davez = new List<Processo>();
     }
 
@@ -144,13 +150,15 @@ public class Escalonador : MonoBehaviour
     void Executar(Processo p, int CPU) // Despachante chama esse metodo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
         if(p == null)return;
-        Debug.Log("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString());
+        uc.CPrint("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString()); //Debug.Log("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString());
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
         {
             p.SetDuracao(p.GetDuracao() - 1);
             if (p.GetDuracao() <= 0) // se a execucao do processo acabou, tira da cpu
+            {
+                uc.CPrint("O processo " + p.ToString() + " finalizou sua execucao");
                 RemoverProcessoDaCPU(CPU);
-            
+            }
             // se a fatia de tempo do quantum acabou, e o processo tem prioridade 1, incrementa a prioridade
             // prioridade 2, significa que o processo vai para a fila rq1
             // prioridade 3, para a fila rq2
@@ -166,10 +174,12 @@ public class Escalonador : MonoBehaviour
                     break;
                     case 2:
                         Filas.fila_pronto_p1_rq1.Add(p);
+                        uc.CPrint("O processo " + p.ToString() + " foi para RQ1 por fatia de tempo");
                         RemoverProcessoDaCPU(CPU);
                     break;
                     default:
                         Filas.fila_pronto_p1_rq2.Add(p);
+                        uc.CPrint("O processo " + p.ToString() + " foi para RQ2 por fatia de tempo");
                         RemoverProcessoDaCPU(CPU);
                     break;
                 }
@@ -180,6 +190,7 @@ public class Escalonador : MonoBehaviour
         else // ele teve que chamar um disco, bota ele no bloqueado
         {
             Filas.bloqueados_disc_1.Add(p);
+            uc.CPrint("O processo " + p.ToString() + " foi bloqueado por entrada / saida");
             RemoverProcessoDaCPU(CPU);
         }
 
