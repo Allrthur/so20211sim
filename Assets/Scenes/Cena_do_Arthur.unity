@@ -422,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2885733914189187684, guid: da6957ac48467174287e67c9a3e2c36e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -75.829956
+      value: -72.573944
       objectReference: {fileID: 0}
     - target: {fileID: 2885733914578021898, guid: da6957ac48467174287e67c9a3e2c36e, type: 3}
       propertyPath: m_Pivot.x
@@ -535,6 +535,10 @@ PrefabInstance:
     - target: {fileID: 2885733914920250484, guid: da6957ac48467174287e67c9a3e2c36e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2885733914920250487, guid: da6957ac48467174287e67c9a3e2c36e, type: 3}
+      propertyPath: m_Text
+      value: t = 0 - Emulador Iniciado
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da6957ac48467174287e67c9a3e2c36e, type: 3}
