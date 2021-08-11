@@ -5,7 +5,7 @@ using UnityEngine;
 public class Processo
 {
     
-    private string id;
+    private string id = "0000";
     private int tchegada;
     private int prioridade;
     private int duracao;
@@ -22,10 +22,14 @@ public class Processo
     }
 
     public override string ToString(){
-        return "<" +tchegada.ToString() +", "+ prioridade.ToString() +", "+ duracao.ToString() +", "+ mem.ToString() +", "+ disc.ToString() + ">";
+        return "Processo#" +id+ " <" +tchegada.ToString() +", "+ prioridade.ToString() +", "+ duracao.ToString() +", "+ mem.ToString() +", "+ disc.ToString() + ">";
     }
     public void SetId(string newid) {
         this.id = newid;
+    }
+
+    public void SetPrioridade(int i){
+        this.prioridade = i;
     }
 
     public string GetId() {

@@ -9,6 +9,7 @@ public class ELongoPrazo
     // Memoria Principal
     private const int PMemTotal = 16384;
     private int PMemDisp = 16384;
+    private int pCounter = 0;
     
     public ELongoPrazo (Escalonador pai){this.pai = pai;}    
     
@@ -17,7 +18,7 @@ public class ELongoPrazo
     
         foreach(var item in dados){
             //Debug.Log("---NOVO PROCESSO---");
-            item.SetId(Time.frameCount.ToString());
+            item.SetId(GerarId());
             if(item.GetMem() < this.PMemDisp){
                 if (item.GetPrioridade() == 1) Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 1, coloca no rq0 de feedback
                 else{
@@ -67,5 +68,14 @@ public class ELongoPrazo
             }
         }
         //Debug.Log("Entrada vazia");
+    }
+
+    private string GerarId()
+    {
+        pCounter += 1;
+        if(pCounter < 10)return "000" + pCounter.ToString();
+        if(pCounter < 100)return "00" + pCounter.ToString();
+        if(pCounter < 1000)return "0" + pCounter.ToString();
+        else return pCounter.ToString();
     }
 }

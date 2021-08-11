@@ -148,10 +148,46 @@ public class Escalonador : MonoBehaviour
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
         {
             p.SetDuracao(p.GetDuracao() - 1);
-            if (p.GetDuracao() <= 0) // se a execucao do processo acabou, tira da cpu, esse if vai funcionar como fatia de tempo tambem
+            if (p.GetDuracao() <= 0) // se a execucao do processo acabou, tira da cpu
+                RemoverProcessoDaCPU(CPU);
+            
+            // se a fatia de tempo do quantum acabou, e o processo tem prioridade 1, incrementa a prioridade
+            // prioridade 2, significa que o processo vai para a fila rq1
+            // prioridade 3, para a fila rq2
+            // prioridade 4 ou maior fica na fila rq2
+            else if ((p.GetPrioridade() > 0) && (t % quantum == 0) && t != 0) //quantum nao acaba em t=0
             {
-                
-                switch(CPU)
+                p.SetPrioridade(p.GetPrioridade() + 1);
+                switch(p.GetPrioridade())
+                {
+                    case 1:
+                        Debug.Log("Incrementei um processo de prioridade 0, corrigindo"); // isso nao devia acontecer nunquinha
+                        p.SetPrioridade(0);
+                    break;
+                    case 2:
+                        Filas.fila_pronto_p1_rq1.Add(p);
+                        RemoverProcessoDaCPU(CPU);
+                    break;
+                    default:
+                        Filas.fila_pronto_p1_rq2.Add(p);
+                        RemoverProcessoDaCPU(CPU);
+                    break;
+                }
+            }
+            
+            
+        }
+        else // ele teve que chamar um disco, bota ele no bloqueado
+        {
+            Filas.bloqueados_disc_1.Add(p);
+            RemoverProcessoDaCPU(CPU);
+        }
+
+    }
+
+    private void RemoverProcessoDaCPU(int CPU) // Chamado pelo executar, tira o processo da CPU e despacha (chama o proximo da fila)
+    {
+        switch(CPU)
                 {
                     case 1:
                         CPU1 = null;
@@ -166,35 +202,7 @@ public class Escalonador : MonoBehaviour
                         CPU4 = null;
                     break;
                 }
-                
-            }
-            
-            
-        }
-        else // ele teve que chamar um disco, bota ele no bloqueado
-        {
-            Filas.bloqueados_disc_1.Add(p);
-            switch(CPU)
-            {
-                case 1:
-                    CPU1 = null;
-                break;
-                case 2:
-                    CPU2 = null;
-                break;
-                case 3:
-                    CPU3 = null;
-                break;
-                case 4: 
-                    CPU4 = null;
-                break;
-            }
-            Despachar(CPU);
-            
-            //EntradaSaida();
-            //Vai pra fila de bloqueados;
-        }
-
+                Despachar(CPU);
+                return;
     }
-
 }
