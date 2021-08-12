@@ -28,6 +28,9 @@ public class Processo
         this.id = newid;
     }
 
+    public void DesbloqueiaUmDisco(){
+        this.disc -= 1;
+    } 
     public void SetPrioridade(int i){
         this.prioridade = i;
     }

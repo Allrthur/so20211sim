@@ -58,6 +58,9 @@ public class Escalonador : MonoBehaviour
         // Desuspender os processos se puder
         emp.recuperaSuspenso(PMemDisp);
 
+        // Desbloquear bloqueados se puder
+        ResponderDiscos();
+
         // incrementa o contador de tempo
         t += 1;
         uc.t = t;
@@ -92,9 +95,9 @@ public class Escalonador : MonoBehaviour
 
         //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
 
-        Processo processo1 = new Processo(10,1,10,16211,0);
-        Processo processo2 = new Processo(10,1,10,101,0);
-        Processo processo3 = new Processo(10,1,10,1011,0);
+        Processo processo1 = new Processo(10,1,10,16211,3);
+        Processo processo2 = new Processo(10,1,10,101,3);
+        Processo processo3 = new Processo(10,1,10,1011,3);
 
 
         //Caso 3: Primeiro processo gigante entra, segundo processo com prioridade força sua saida liberando espaço suficiente para o terceiro processo entrar de primeira
@@ -201,13 +204,131 @@ public class Escalonador : MonoBehaviour
         }
         else // ele teve que chamar um disco, bota ele no bloqueado
         {
-            Filas.bloqueados_disc_1.Add(p);
+            Filas.bloqueados.Add(p);
             uc.CPrint("O processo " + p.ToString() + " foi bloqueado por entrada / saida");
             RemoverProcessoDaCPU(CPU);
         }
 
     }
 
+    void ResponderDiscos()
+    {
+        int randint = (int)Random.Range(0, 5); // 0 (ou 5) se nenhum disco respondeu, ou o disco 1, 2, 3, 4 respondeu desta vez
+        //Debug.Log("Randint = " + randint.ToString());
+        //Debug.Log("Disc1: " + DISC1?.GetId() +" |Disc2: "+ DISC2?.GetId() +" |Disc3: "+ DISC3?.GetId() +" |Disc4: " + DISC4?.GetId());
+        switch(randint)
+        {
+            case 1: // se o disco 1 respondeu
+                if(DISC1 == null)return;
+                DISC1.DesbloqueiaUmDisco(); // tira um dos discos do processo
+                if(DISC1.GetDisc() == 0) // se o processo nao precisa de mais nenhum disco
+                {
+                    Filas.bloqueados.Remove(DISC1); // remove o processo da fila de bloqueados
+                    uc.CPrint(DISC1.GetId() + " Foi retirado da fila fila de bloqueados");
+                    // e coloca ele na fila de prontos de acordo com sua priodidade
+                    switch(DISC1.GetPrioridade())
+                    {
+                        case 0:
+                            Filas.fila_pronto_p0.Add(DISC1);
+                        break;
+                        case 1:
+                            Filas.fila_pronto_p1_rq0.Add(DISC1);
+                        break;
+                        case 2:
+                            Filas.fila_pronto_p1_rq1.Add(DISC1);
+                        break;
+                        default:
+                            Filas.fila_pronto_p1_rq2.Add(DISC1);
+                        break;
+
+                    }
+                }
+                DISC1 = null; // e finalmente tira o processo do disco 1, pois o disco ja o respondeu
+
+            break;
+            case 2:
+                if(DISC2 == null)return;
+                DISC2.DesbloqueiaUmDisco();
+                if(DISC2.GetDisc() == 0)
+                {
+                    Filas.bloqueados.Remove(DISC2);
+                    uc.CPrint(DISC2.GetId() + " Foi retirado da fila fila de bloqueados");
+                    switch(DISC2.GetPrioridade())
+                    {
+                        case 0:
+                            Filas.fila_pronto_p0.Add(DISC2);
+                        break;
+                        case 1:
+                            Filas.fila_pronto_p1_rq0.Add(DISC2);
+                        break;
+                        case 2:
+                            Filas.fila_pronto_p1_rq1.Add(DISC2);
+                        break;
+                        default:
+                            Filas.fila_pronto_p1_rq2.Add(DISC2);
+                        break;
+
+                    }
+                }
+                DISC2 = null;
+            break;
+            case 3:
+                if(DISC3 == null)return;
+                DISC3.DesbloqueiaUmDisco();
+                if(DISC3.GetDisc() == 0)
+                {
+                    Filas.bloqueados.Remove(DISC3);
+                    uc.CPrint(DISC3.GetId() + " Foi retirado da fila fila de bloqueados");
+                    switch(DISC3.GetPrioridade())
+                    {
+                        case 0:
+                            Filas.fila_pronto_p0.Add(DISC3);
+                        break;
+                        case 1:
+                            Filas.fila_pronto_p1_rq0.Add(DISC3);
+                        break;
+                        case 2:
+                            Filas.fila_pronto_p1_rq1.Add(DISC3);
+                        break;
+                        default:
+                            Filas.fila_pronto_p1_rq2.Add(DISC3);
+                        break;
+
+                    }
+                }
+                DISC3 = null;
+            break;
+            case 4:
+                if(DISC4 == null)return;
+                DISC4.DesbloqueiaUmDisco();
+                if(DISC4.GetDisc() == 0)
+                {
+                    Filas.bloqueados.Remove(DISC4);
+                    uc.CPrint(DISC4.GetId() + " Foi retirado da fila fila de bloqueados");
+                    switch(DISC4.GetPrioridade())
+                    {
+                        case 0:
+                            Filas.fila_pronto_p0.Add(DISC4);
+                        break;
+                        case 1:
+                            Filas.fila_pronto_p1_rq0.Add(DISC4);
+                        break;
+                        case 2:
+                            Filas.fila_pronto_p1_rq1.Add(DISC4);
+                        break;
+                        default:
+                            Filas.fila_pronto_p1_rq2.Add(DISC4);
+                        break;
+
+                    }
+                }
+                DISC4 = null;
+            break;
+            default:
+                Debug.Log("sem resposta dos discos desta vez");
+            break;
+        }
+    }
     private void RemoverProcessoDaCPU(int CPU) // Chamado pelo executar, tira o processo da CPU e despacha (chama o proximo da fila)
     {
         switch(CPU)
