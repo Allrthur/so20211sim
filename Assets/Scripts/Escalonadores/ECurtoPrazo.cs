@@ -67,19 +67,19 @@ public class ECurtoPrazo
             {
                 case 1:
                     pai.CPU1 = p;
-                    Debug.Log(p.ToString() + " foi despachado para a CPU1");
+                    //Debug.Log(p.ToString() + " foi despachado para a CPU1");
                 break;
                 case 2:
                     pai.CPU2 = p;
-                    Debug.Log(p.ToString() + " foi despachado para a CPU2");
+                    //Debug.Log(p.ToString() + " foi despachado para a CPU2");
                 break;
                 case 3:
                     pai.CPU3 = p;
-                    Debug.Log(p.ToString() + " foi despachado para a CPU3");
+                    //Debug.Log(p.ToString() + " foi despachado para a CPU3");
                 break;
                 case 4:
                     pai.CPU4 = p;
-                    Debug.Log(p.ToString() + " foi despachado para a CPU4");
+                    //Debug.Log(p.ToString() + " foi despachado para a CPU4");
                 break;
             }
             return true;

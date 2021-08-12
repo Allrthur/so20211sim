@@ -141,7 +141,6 @@ public class Escalonador : MonoBehaviour
         foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
         if(davez.Count != 0)elp.Admitir(davez); // passar davez para o admitir desta linha
         davez = new List<Processo>();
-        RecuperarSuspenso();
     }
 
     public (int,int) LiberarMP(int mem, int prioridade) // Escalonador de Medio Prazo // Rick
@@ -169,6 +168,7 @@ public class Escalonador : MonoBehaviour
             if (p.GetDuracao() <= 0) // se a execucao do processo acabou, tira da cpu
             {
                 uc.CPrint("O processo " + p.ToString() + " finalizou sua execucao");
+                PMemDisp += p.GetMem();
                 RemoverProcessoDaCPU(CPU);
             }
             // se a fatia de tempo do quantum acabou, e o processo tem prioridade 1, incrementa a prioridade

@@ -10,7 +10,7 @@ public class EMedioPrazo
     public (int,int) LiberarMP(int memItem, int prioridade) // Liberar MP pede a memoria necessaria para admitir o novo processo
     {
         //Basicamente checa as listas de prontos do rq2 ao rq0 para suspender o processo que ocupa maior espaço lá
-        //Debug.Log("Função para liberar memoria devido a falta de espaço foi chamada");
+        Debug.Log("Função para liberar memoria devido a falta de espaço foi chamada");
         //Debug.Log(Filas.fila_pronto_p1_rq0.Count);
         int maior;
         if(Filas.fila_pronto_p1_rq2.Count > 0){
@@ -65,24 +65,40 @@ public class EMedioPrazo
 
     public void recuperaSuspenso(int memDisp)
     {
-        if(Suspensos.fila_pronto_p1_rq0.Count == 0)return;
-        if(Suspensos.fila_pronto_p1_rq0[0].GetMem() <= memDisp){
-            Filas.fila_pronto_p1_rq0.Add(Suspensos.fila_pronto_p1_rq0[0]);
-            Suspensos.fila_pronto_p1_rq0.RemoveAt(0);
-            Debug.Log("Processo retornou da fila de suspensos rq0");
-            return;
+        
+        //Debug.Log("Tentanto tirar um processo da suspensao");
+        //Debug.Log("Checando rq0");
+        for(int i = 0; i < Suspensos.fila_pronto_p1_rq0.Count; i++){
+            //Debug.Log(i);//if(Filas.fila_pronto_p1_rq0.Count == 0)break;
+            if(Suspensos.fila_pronto_p1_rq0[i].GetMem() <= memDisp)
+            {
+                Filas.fila_pronto_p1_rq0.Add(Suspensos.fila_pronto_p1_rq0[i]);
+                Suspensos.fila_pronto_p1_rq0.RemoveAt(i);
+                Debug.Log("Processo retornou da fila de suspensos rq0");
+                return;
+            }
         }
-        if(Suspensos.fila_pronto_p1_rq0.Count == 0 && Suspensos.fila_pronto_p1_rq1[0].GetMem() <= memDisp){
-            Filas.fila_pronto_p1_rq1.Add(Suspensos.fila_pronto_p1_rq1[0]);
-            Suspensos.fila_pronto_p1_rq1.RemoveAt(0);
-            Debug.Log("Processo retornou da fila de suspensos rq1");
-            return;
+        //Debug.Log("Checando rq1");
+        for(int i = 0; i < Suspensos.fila_pronto_p1_rq1.Count; i++){
+            //Debug.Log(i);//if(Filas.fila_pronto_p1_rq1.Count == 0)break;
+            if(Suspensos.fila_pronto_p1_rq1[i].GetMem() <= memDisp)
+            {
+                Filas.fila_pronto_p1_rq1.Add(Suspensos.fila_pronto_p1_rq1[i]);
+                Suspensos.fila_pronto_p1_rq1.RemoveAt(i);
+                Debug.Log("Processo retornou da fila de suspensos rq1");
+                return;
+            }
         }
-        if(Suspensos.fila_pronto_p1_rq1.Count == 0 && Suspensos.fila_pronto_p1_rq2[0].GetMem() <= memDisp){
-            Filas.fila_pronto_p1_rq2.Add(Suspensos.fila_pronto_p1_rq2[0]);
-            Suspensos.fila_pronto_p1_rq2.RemoveAt(0);
-            Debug.Log("Processo retornou da fila de suspensos rq2");
-            return;
+        //Debug.Log("Checando rq2");
+        for(int i = 0; i < Suspensos.fila_pronto_p1_rq2.Count; i++){
+            //Debug.Log(i);//if(Filas.fila_pronto_p1_rq2.Count == 0)break;
+            if(Suspensos.fila_pronto_p1_rq0[i].GetMem() <= memDisp)
+            {
+                Filas.fila_pronto_p1_rq2.Add(Suspensos.fila_pronto_p1_rq2[i]);
+                Suspensos.fila_pronto_p1_rq2.RemoveAt(i);
+                Debug.Log("Processo retornou da fila de suspensos rq2");
+                return;
+            }
         }
     }
 }
