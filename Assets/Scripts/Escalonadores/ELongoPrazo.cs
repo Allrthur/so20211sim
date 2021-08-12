@@ -5,17 +5,9 @@ using UnityEngine;
 public class ELongoPrazo
 {
     private Escalonador pai;
-    
-    // Memoria Principal
-    private const int PMemTotal = 16384;
-    private int PMemDisp = 16384;
     private int pCounter = 0;
     
     public ELongoPrazo (Escalonador pai){this.pai = pai;}
-
-    public int getMemDisp(){
-        return PMemDisp;
-    }
     
     public void Admitir(List<Processo> dados)
     {
@@ -23,7 +15,7 @@ public class ELongoPrazo
         foreach(var item in dados){
             //Debug.Log("---NOVO PROCESSO---");
             item.SetId(GerarId());
-            if(item.GetMem() < this.PMemDisp){
+            if(item.GetMem() < pai.PMemDisp){
                 if (item.GetPrioridade() == 1)
                 {
                     Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 1, coloca no rq0 de feedback
@@ -33,7 +25,7 @@ public class ELongoPrazo
                     Filas.fila_pronto_p0.Add(item); // Se prioridade for 0, coloca na fila de FCFS
                     pai.uc.CPrint(item.GetId()+" Foi admitido na fila de prioridade FCFS");//Debug.Log("Entrou na fila de prioridade");
                 }
-                this.PMemDisp -= item.GetMem();
+                pai.PMemDisp -= item.GetMem();
                 //Debug.Log("Admitiu de primeira");
                 //Debug.Log("Foi admitido depois de suspender um processo - FALSE");
                 continue;
@@ -46,7 +38,7 @@ public class ELongoPrazo
                     pai.uc.CPrint(item.GetId()+" Nao pode ser admitido por falta de memoria");//Debug.Log("Tentou liberar mas não deu");
                     continue;
                 }
-                PMemDisp += valor;
+                pai.PMemDisp += valor;
 
                 if(item.GetPrioridade() == 0){
                     Filas.fila_pronto_p0.Add(item);

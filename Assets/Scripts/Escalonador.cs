@@ -13,6 +13,10 @@ public class Escalonador : MonoBehaviour
     public EMedioPrazo emp;
     public ELongoPrazo elp;
     
+    // Memoria Principal
+    public const int PMemTotal = 16384;
+    public int PMemDisp = 16384;
+    
     // Processos que a cpu esta executando
     public Processo CPU1;
     public Processo CPU2;
@@ -51,6 +55,9 @@ public class Escalonador : MonoBehaviour
         if(CPU3 != null)Executar(CPU3, 3); else {ecp.Despachar(3); Executar(CPU3, 3);}
         if(CPU4 != null)Executar(CPU4, 4); else {ecp.Despachar(4); Executar(CPU4, 4);}
         
+        // Desuspender os processos se puder
+        emp.recuperaSuspenso(PMemDisp);
+
         // incrementa o contador de tempo
         t += 1;
         uc.t = t;
@@ -77,18 +84,18 @@ public class Escalonador : MonoBehaviour
         // Passo a passo será mostrado no console
 
         //Caso 1: Todos entram de primeira
-        
+        /*
         Processo processo1 = new Processo(10,1,10,13211,0);
         Processo processo2 = new Processo(10,1,10,101,3);
         Processo processo3 = new Processo(10,1,10,1011,1);
-        
+        */
 
         //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
-        /*
-        Processo processo1 = new Processo(10,1,10,16211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-        */
+
+        Processo processo1 = new Processo(10,1,10,16211,0);
+        Processo processo2 = new Processo(10,1,10,101,0);
+        Processo processo3 = new Processo(10,1,10,1011,0);
+
 
         //Caso 3: Primeiro processo gigante entra, segundo processo com prioridade força sua saida liberando espaço suficiente para o terceiro processo entrar de primeira
         /*
@@ -143,7 +150,7 @@ public class Escalonador : MonoBehaviour
     }
 
     public void RecuperarSuspenso(){
-        emp.recuperaSuspenso(elp.getMemDisp());
+        emp.recuperaSuspenso(PMemDisp);
     }
 
     void Despachar(int CPU) // Escalonador de Curto Prazo // Juan e Theo

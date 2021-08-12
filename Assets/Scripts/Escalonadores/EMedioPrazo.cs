@@ -54,7 +54,8 @@ public class EMedioPrazo
         return (int.MinValue, -1);
     }
 
-    public int checaMaiorProcesso(List<Processo> fila){
+    public int checaMaiorProcesso(List<Processo> fila)
+    {
         int maior = 0;
         for (var i = 1; i < fila.Count; i++) {
             if(fila[i].GetMem() > fila[maior].GetMem()) maior = i;
@@ -62,7 +63,9 @@ public class EMedioPrazo
         return maior;
     }
 
-    public void recuperaSuspenso(int memDisp){
+    public void recuperaSuspenso(int memDisp)
+    {
+        if(Suspensos.fila_pronto_p1_rq0.Count == 0)return;
         if(Suspensos.fila_pronto_p1_rq0[0].GetMem() <= memDisp){
             Filas.fila_pronto_p1_rq0.Add(Suspensos.fila_pronto_p1_rq0[0]);
             Suspensos.fila_pronto_p1_rq0.RemoveAt(0);
