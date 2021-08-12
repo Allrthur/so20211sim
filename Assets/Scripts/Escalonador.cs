@@ -161,7 +161,7 @@ public class Escalonador : MonoBehaviour
     void Executar(Processo p, int CPU) // Despachante chama esse metodo para mandar uma CPU executar um processo // Juan e Theo // Arthur
     {
         if(p == null)return;
-        uc.CPrint("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString()); //Debug.Log("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString());
+        //uc.CPrint("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString()); //Debug.Log("Executando o processo " + p.ToString() + " na CPU " + CPU.ToString());
         if (p.GetDisc() == 0) // se o processo nao pedir discos, execute normalmente ate o fim da fatia de tempo ou fim do processo
         {
             p.SetDuracao(p.GetDuracao() - 1);

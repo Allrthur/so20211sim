@@ -73,8 +73,8 @@ public class EMedioPrazo
             if(Suspensos.fila_pronto_p1_rq0[i].GetMem() <= memDisp)
             {
                 Filas.fila_pronto_p1_rq0.Add(Suspensos.fila_pronto_p1_rq0[i]);
+                pai.uc.CPrint("Processo "+ Suspensos.fila_pronto_p1_rq0[i].GetId() +" retornou da fila de suspensos rq0");//Debug.Log("Processo retornou da fila de suspensos rq0");
                 Suspensos.fila_pronto_p1_rq0.RemoveAt(i);
-                Debug.Log("Processo retornou da fila de suspensos rq0");
                 return;
             }
         }
@@ -84,8 +84,8 @@ public class EMedioPrazo
             if(Suspensos.fila_pronto_p1_rq1[i].GetMem() <= memDisp)
             {
                 Filas.fila_pronto_p1_rq1.Add(Suspensos.fila_pronto_p1_rq1[i]);
+                pai.uc.CPrint("Processo "+ Suspensos.fila_pronto_p1_rq1[i].GetId() +" retornou da fila de suspensos rq1");//Debug.Log("Processo retornou da fila de suspensos rq1");
                 Suspensos.fila_pronto_p1_rq1.RemoveAt(i);
-                Debug.Log("Processo retornou da fila de suspensos rq1");
                 return;
             }
         }
@@ -95,8 +95,8 @@ public class EMedioPrazo
             if(Suspensos.fila_pronto_p1_rq0[i].GetMem() <= memDisp)
             {
                 Filas.fila_pronto_p1_rq2.Add(Suspensos.fila_pronto_p1_rq2[i]);
+                pai.uc.CPrint("Processo "+ Suspensos.fila_pronto_p1_rq1[i].GetId() +" retornou da fila de suspensos rq2");//Debug.Log("Processo retornou da fila de suspensos rq2");
                 Suspensos.fila_pronto_p1_rq2.RemoveAt(i);
-                Debug.Log("Processo retornou da fila de suspensos rq2");
                 return;
             }
         }
