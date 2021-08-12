@@ -38,7 +38,7 @@ public class EMedioPrazo
             else{ Debug.Log("Tamanho do maior processo no rq1 nao seria suficiente para entrada de novo processo");}
         }
         if((Filas.fila_pronto_p1_rq0.Count > 1) || (prioridade == 0 && Filas.fila_pronto_p1_rq0.Count != 0)){ // Maior que 1 na checagem da rq0 pra nao deixar ficar um ciclo infinito caso seja prioridade 1, se for prioriade 0 vai dar liberar de qualquer forma
-                                                                   // podemos mudar esse numero para que a politica fique mais viável para muitos processos
+                                        //   ^ podemos mudar esse numero para que a politica fique mais viável para muitos processos
             maior = checaMaiorProcesso(Filas.fila_pronto_p1_rq0);
             if(Filas.fila_pronto_p1_rq0[maior].GetMem() >= memItem){ 
                 Suspensos.fila_pronto_p1_rq0.Add(Filas.fila_pronto_p1_rq0[maior]);
@@ -60,5 +60,26 @@ public class EMedioPrazo
             if(fila[i].GetMem() > fila[maior].GetMem()) maior = i;
         }
         return maior;
+    }
+
+    public void recuperaSuspenso(int memDisp){
+        if(Suspensos.fila_pronto_p1_rq0[0].GetMem() <= memDisp){
+            Filas.fila_pronto_p1_rq0.Add(Suspensos.fila_pronto_p1_rq0[0]);
+            Suspensos.fila_pronto_p1_rq0.RemoveAt(0);
+            Debug.Log("Processo retornou da fila de suspensos rq0");
+            return;
+        }
+        if(Suspensos.fila_pronto_p1_rq0.Count == 0 && Suspensos.fila_pronto_p1_rq1[0].GetMem() <= memDisp){
+            Filas.fila_pronto_p1_rq1.Add(Suspensos.fila_pronto_p1_rq1[0]);
+            Suspensos.fila_pronto_p1_rq1.RemoveAt(0);
+            Debug.Log("Processo retornou da fila de suspensos rq1");
+            return;
+        }
+        if(Suspensos.fila_pronto_p1_rq1.Count == 0 && Suspensos.fila_pronto_p1_rq2[0].GetMem() <= memDisp){
+            Filas.fila_pronto_p1_rq2.Add(Suspensos.fila_pronto_p1_rq2[0]);
+            Suspensos.fila_pronto_p1_rq2.RemoveAt(0);
+            Debug.Log("Processo retornou da fila de suspensos rq2");
+            return;
+        }
     }
 }

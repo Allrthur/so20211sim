@@ -11,7 +11,11 @@ public class ELongoPrazo
     private int PMemDisp = 16384;
     private int pCounter = 0;
     
-    public ELongoPrazo (Escalonador pai){this.pai = pai;}    
+    public ELongoPrazo (Escalonador pai){this.pai = pai;}
+
+    public int getMemDisp(){
+        return PMemDisp;
+    }
     
     public void Admitir(List<Processo> dados)
     {

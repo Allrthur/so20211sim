@@ -134,11 +134,16 @@ public class Escalonador : MonoBehaviour
         foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
         if(davez.Count != 0)elp.Admitir(davez); // passar davez para o admitir desta linha
         davez = new List<Processo>();
+        RecuperarSuspenso();
     }
 
     public (int,int) LiberarMP(int mem, int prioridade) // Escalonador de Medio Prazo // Rick
     { 
         return emp.LiberarMP(mem, prioridade);// suspender processos quando a memoria encher.
+    }
+
+    public void RecuperarSuspenso(){
+        emp.recuperaSuspenso(elp.getMemDisp());
     }
 
     void Despachar(int CPU) // Escalonador de Curto Prazo // Juan e Theo
