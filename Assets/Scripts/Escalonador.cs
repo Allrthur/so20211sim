@@ -68,17 +68,15 @@ public class Escalonador : MonoBehaviour
 
     // Metodos de execução
     List<Processo> LerEntrada() {
-        List<Processo> falae = new List<Processo>();
-
-        Processo processo1 = new Processo(10,1,10,13211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-
-        falae.Add(processo1);
-        falae.Add(processo2);
-        falae.Add(processo3);
-
-        return falae;
+        List<Processo> listaInicial = new List<Processo>();
+        var textfile = Resources.Load<TextAsset>("entradas").text.Split("\n"[0]);
+        foreach (var item in textfile)
+        {
+            var campos = item.Split(',');
+            var processo = new Processo(int.Parse(campos[0]),int.Parse(campos[1]),int.Parse(campos[2]),int.Parse(campos[3]),int.Parse(campos[4]));
+            listaInicial.Add(processo);
+        }
+        return listaInicial;
     }
     List<Processo> LerEntradaTestes() // leitor do arquivo de entrada
     {
@@ -141,7 +139,7 @@ public class Escalonador : MonoBehaviour
     { 
         
         List<Processo> davez = new List<Processo>(); // Criar lista de entrada com os processo que chegam no tempo t.
-        foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
+        foreach(Processo p in LerEntrada()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
         if(davez.Count != 0)elp.Admitir(davez); // passar davez para o admitir desta linha
         davez = new List<Processo>();
     }
