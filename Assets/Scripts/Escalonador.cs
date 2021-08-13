@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 
 public class Escalonador : MonoBehaviour
 {
-    
+    // lista de entrada
+    private List<Processo> entrada = new List<Processo>();
     
     // Variaveis que apontam para outras classes
     public UIConsole uc;
@@ -41,7 +43,8 @@ public class Escalonador : MonoBehaviour
         ecp = new ECurtoPrazo(this);
         emp = new EMedioPrazo(this);
         elp = new ELongoPrazo(this);
-
+        
+        LerEntrada();
     }
 
     void FixedUpdate() // Este eh o loop do simulador, executado a cada unidade de tempo.
@@ -67,81 +70,35 @@ public class Escalonador : MonoBehaviour
     }
 
     // Metodos de execução
-    List<Processo> LerEntrada() {
-        List<Processo> falae = new List<Processo>();
+    void LerEntrada() {
+        // coisa de arquivo
+        string path = "entrada.txt";
+        StreamReader sr = new StreamReader(path);
 
-        Processo processo1 = new Processo(10,1,10,13211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
+        // loop de leitura
+        string entrada = sr.ReadLine();
+        while(entrada != null) // se nao tiver mais linha deixa quieto
+        {
+            //Debug.Log("eu to lendo a entrada");
+            string[] split = entrada.Split(','); // divide a entrada em um array de strings
+            
+            
+            this.entrada.Add(new Processo(System.Int32.Parse(split[0]), System.Int32.Parse(split[1]), // traduz as strings em int e adiciona pra lista
+            System.Int32.Parse(split[2]), System.Int32.Parse(split[3]), System.Int32.Parse(split[4])));
 
-        falae.Add(processo1);
-        falae.Add(processo2);
-        falae.Add(processo3);
+            entrada = sr.ReadLine(); // le a proxima linha
+        }
 
-        return falae;
+        // fechando arquivo
+        sr.Close();
     }
-    List<Processo> LerEntradaTestes() // leitor do arquivo de entrada
-    {
-        List<Processo> falae = new List<Processo>();
-        // Alguns casos possiveis de entrada, basta descomentar um dos casos que estao entre /* */ e comentar o que estava ativo
-        // Passo a passo será mostrado no console
-
-        //Caso 1: Todos entram de primeira
-        /*
-        Processo processo1 = new Processo(10,1,10,13211,0);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,1);
-        */
-
-        //Caso 2: Os dois primeiros enchem a memoria e o terceiro tem que suspender um deles, escolhendo o maior
-
-        Processo processo1 = new Processo(10,1,10,16211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-
-
-        //Caso 3: Primeiro processo gigante entra, segundo processo com prioridade força sua saida liberando espaço suficiente para o terceiro processo entrar de primeira
-        /*
-        Processo processo1 = new Processo(10,1,10,16311,3);
-        Processo processo2 = new Processo(10,0,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-        */
-
-        //Caso 4: Um processo de alta prioridade de grande tamanho barra outros processos não importando qual prioridade deles
-        /*
-        Processo processo1 = new Processo(10,0,10,16311,3);
-        Processo processo2 = new Processo(10,0,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-        */
-
-        //Caso 5: A memoria está cheia, há um processo de baixa prioridade em uma das filas anteriores ao rq0, porém seu espaço ocupado 
-        //        na memoria nao é o suficiente para dar lugar ao novo processo, o forçando a continuar procurando mesmo que seja de alta prioridade
-        /*
-        Filas.fila_pronto_p1_rq2.Add(new Processo(10,1,10,10,3)); // o tamanho desse processo nao foi retirado do valor da memoria disponivel apenas por simplicidade de testes
-        Processo processo1 = new Processo(10,1,10,16211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,0,10,1011,3);
-        */
-        //Caso 6: Um processo novo ao tentar suspender outro vai sempre começar procurando na lista rq2, depois na rq1 e depois na rq0
-        /*
-        Filas.fila_pronto_p1_rq1.Add(new Processo(10,1,10,1400,3)); // o tamanho desse processo nao foi retirado do valor da memoria disponivel apenas por simplicidade de testes
-        Processo processo1 = new Processo(10,1,10,16211,3);
-        Processo processo2 = new Processo(10,1,10,101,3);
-        Processo processo3 = new Processo(10,1,10,1011,3);
-        */
-        falae.Add(processo1);
-        falae.Add(processo2);
-        falae.Add(processo3);
-        return falae;
-    }
-    
     // Metodos com proxy
 
     public void Admitir() // Escalonador de Longo Prazo // Rick
     { 
         
         List<Processo> davez = new List<Processo>(); // Criar lista de entrada com os processo que chegam no tempo t.
-        foreach(Processo p in LerEntradaTestes()) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
+        foreach(Processo p in this.entrada) if(p.GetTchegada() == t) davez.Add(p); // loop de filtragem
         if(davez.Count != 0)elp.Admitir(davez); // passar davez para o admitir desta linha
         davez = new List<Processo>();
     }
@@ -325,7 +282,7 @@ public class Escalonador : MonoBehaviour
                 DISC4 = null;
             break;
             default:
-                Debug.Log("sem resposta dos discos desta vez");
+                //Debug.Log("sem resposta dos discos desta vez");
             break;
         }
     }
