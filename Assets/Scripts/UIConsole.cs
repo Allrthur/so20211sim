@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class UIConsole : MonoBehaviour
 {
@@ -18,6 +19,16 @@ public class UIConsole : MonoBehaviour
     {
         GameObject txt = Instantiate(textline, container.transform);
         txt.GetComponent<Text>().text = "t = " +t.ToString() +" - " +msg;
+
+        // coisa de arquivo
+        string path = "saida.txt";
+        StreamWriter sw = new StreamWriter(path, true);
+
+        // loop de leitura
+        sw.WriteLine("t = " +t.ToString() +" - " +msg);
+
+        // fechando arquivo
+        sw.Close();
 
 
         //autoscroll down

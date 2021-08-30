@@ -19,11 +19,11 @@ public class ELongoPrazo
                 if (item.GetPrioridade() == 1)
                 {
                     Filas.fila_pronto_p1_rq0.Add(item); // Se prioridade for 1, coloca no rq0 de feedback
-                    pai.uc.CPrint(item.GetId()+" Foi admitido na fila RQ0 de Feedback");
+                    pai.uc.CPrint(item.ToString()+" Foi admitido na fila RQ0 de Feedback");
                 } 
                 else{
                     Filas.fila_pronto_p0.Add(item); // Se prioridade for 0, coloca na fila de FCFS
-                    pai.uc.CPrint(item.GetId()+" Foi admitido na fila de prioridade FCFS");//Debug.Log("Entrou na fila de prioridade");
+                    pai.uc.CPrint(item.ToString()+" Foi admitido na fila de prioridade FCFS");//Debug.Log("Entrou na fila de prioridade");
                 }
                 pai.PMemDisp -= item.GetMem();
                 //Debug.Log("Admitiu de primeira");
@@ -35,14 +35,14 @@ public class ELongoPrazo
                 var retorno = pai.LiberarMP(item.GetMem(), item.GetPrioridade());   // tenta suspender algum processo e retorna o valor liberado na MP já contando 
                 int valor = retorno.Item1;                                          // com a entrada do novo processo e retornando também de qual fila foi suspendido
                 if(valor == int.MinValue) {
-                    pai.uc.CPrint(item.GetId()+" Nao pode ser admitido por falta de memoria");//Debug.Log("Tentou liberar mas não deu");
+                    pai.uc.CPrint(item.ToString()+" Nao pode ser admitido por falta de memoria");//Debug.Log("Tentou liberar mas não deu");
                     continue;
                 }
                 pai.PMemDisp += valor;
 
                 if(item.GetPrioridade() == 0){
                     Filas.fila_pronto_p0.Add(item);
-                    pai.uc.CPrint(item.GetId()+" Foi admitido na fila de prioridade FCFS");//Debug.Log("Entrou na fila de prioridade");
+                    pai.uc.CPrint(item.ToString()+" Foi admitido na fila de prioridade FCFS");//Debug.Log("Entrou na fila de prioridade");
                 }
                 else{
                     Filas.fila_pronto_p1_rq0.Add(item);
@@ -62,7 +62,7 @@ public class ELongoPrazo
                             return;
                     }
                 }
-                pai.uc.CPrint(item.GetId()+" Foi admitido na fila RQ0 de Feedback");//Debug.Log("Foi admitido depois de suspender um processo - TRUE");
+                pai.uc.CPrint(item.ToString()+" Foi admitido na fila RQ0 de Feedback");//Debug.Log("Foi admitido depois de suspender um processo - TRUE");
                 continue;
 
             }
